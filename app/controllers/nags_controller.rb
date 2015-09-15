@@ -1,4 +1,4 @@
-class RestroController < UITableViewController
+class NagsController < UITableViewController
 
   def viewDidLoad
     super
