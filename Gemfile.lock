@@ -1,12 +1,14 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    curb (0.8.8)
     rake (10.4.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  curb
   rake
 
 BUNDLED WITH
