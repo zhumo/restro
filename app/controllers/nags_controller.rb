@@ -24,9 +24,11 @@ class NagsController < UITableViewController
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     @reuseIdentifier ||= "CELL_IDENTIFIER"
     cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier) || begin
-      UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: @reuseIdentifier)
+      UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier: @reuseIdentifier)
     end
     cell.textLabel.text = @filtered_nags[indexPath.row].contents
+    cell.imageView.image = UIImage.alloc.initWithData(NSData.alloc.initWithContentsOfURL(NSURL.URLWithString("https://upload.wikimedia.org/wikipedia/commons/8/8b/2010-07-20_Black_windup_alarm_clock_face.jpg")))
+    cell.detailTextLabel.text = "Hi My name is mo"
     cell
   end
 
