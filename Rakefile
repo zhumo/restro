@@ -4,6 +4,7 @@ require 'motion/project/template/ios'
 
 begin
   require 'bundler'
+  require 'afmotion'
   Bundler.require
 rescue LoadError
 end

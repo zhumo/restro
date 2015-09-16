@@ -2,30 +2,23 @@ class NagsController < UITableViewController
 
   def viewDidLoad
     super
-    @restaurants = [
-      Restaurant.new({
-        name: "Sumiao's Hometown",
-        thumb_image_url: nil,
-        food_type: "Hunan",
-        desc: "Awesome high class authentic Hunan restaurant with an awesome owner"
-      }),
-      Restaurant.new({
-        name: "Domino's",
-        thumb_image_url: nil,
-        food_type: "Pizza",
-        desc: "Great for your munchies"
-      })
-    ]
+    @nags = NagsService.get_nags("ec40bf685bdd5c1bf504")
+
+    @filtered_nags = @nags
+
+    searchBar = UISearchBar.alloc.initWithFrame(CGRectMake(0, 0, self.tableView.frame.size.width, 0))
+    searchBar.delegate = self
+    searchBar.showsCancelButton = true
+    searchBar.sizeToFit
+    view.tableHeaderView = searchBar
 
     view.backgroundColor = UIColor.whiteColor
-    @myTableView = UITableView.alloc.initWithFrame(view.bounds, style: UITableViewStylePlain)
-    @myTableView.dataSource = self
-    @myTableView.delegate = self
+    view.dataSource = view.delegate = self
     view.addSubview(@myTableView)
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    @restaurants.count
+    @filtered_nags.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
@@ -33,8 +26,26 @@ class NagsController < UITableViewController
     cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier) || begin
       UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: @reuseIdentifier)
     end
-    cell.textLabel.text = @restaurants[indexPath.row].name
+    cell.textLabel.text = @filtered_nags[indexPath.row].contents
     cell
+  end
+
+  def searchBarSearchButtonClicked(searchBar)
+    @filtered_nags = @nags.select{ |n| n.contents.match(/#{searchBar.text}/i) }
+    view.reloadData
+    searchBar.resignFirstResponder
+  end
+
+  def searchBarCancelButtonClicked(searchBar)
+    @filtered_nags = @nags
+    searchBar.text = nil
+    view.reloadData
+    searchBar.resignFirstResponder
+  end
+
+  def searchBar(searchBar, textDidChange: text)
+    @filtered_nags = @nags.select{ |n| n.contents.match(/#{text}/i) }
+    view.reloadData
   end
 
 end
